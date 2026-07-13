@@ -2,7 +2,7 @@ import spacy
 import pandas as pd
 import re
 
-# Carrega o modelo leve de português do spaCy
+# Modelo leve de português do spaCy
 try:
     nlp = spacy.load("pt_core_news_sm")
 except OSError:
@@ -19,7 +19,7 @@ def limpar_texto(texto: str) -> str:
     if not isinstance(texto, str) or not texto.strip():
         return ""
     
-    # 1 e 2. Minúsculas e remoção de caracteres especiais / espaços extras
+    # Limpeza: Letras em minúsculos e remoção de caracteres especiais / espaços extras
     texto_limpo = texto.lower()
     texto_limpo = re.sub(r'[^\w\s]', '', texto_limpo)
     texto_limpo = re.sub(r'\s+', ' ', texto_limpo).strip()
@@ -41,7 +41,7 @@ def analisar_sentimento_lexico(texto_limpo: str) -> str:
     Verifica a presença de palavras-chave fortemente positivas ou negativas.
     Isso ajuda a fazer uma triagem rápida antes de gastar tokens com a IA.
     """
-    # Listas simplificadas para demonstração técnica (abordagem baseada em dicionário)
+    # Listas simplificada (abordagem baseada em dicionário)
     palavras_positivas = {'bom', 'otimo', 'excelente', 'maravilhoso', 'gostar', 'amar', 'perfeito', 'recomendar'}
     palavras_negativas = {'ruim', 'pessimo', 'horrivel', 'quebrar', 'defeito', 'odiar', 'atrasar', 'errado', 'nao'}
     
@@ -64,10 +64,10 @@ def processar_lote_feedbacks(feedbacks: list[str]) -> pd.DataFrame:
     # Cria o DataFrame original do Pandas
     df = pd.DataFrame({"texto_original": feedbacks})
     
-    # Aplica a limpeza de NLP linha por linha criando uma nova coluna
+    # Aplica a limpeza de NLP linha por linha 
     df["texto_processado"] = df["texto_original"].apply(limpar_texto)
     
-    # Aplica a nossa análise de sentimento inicial estruturada
+    # Aplica a análise de sentimento inicial estruturada
     df["analise_inicial"] = df["texto_processado"].apply(analisar_sentimento_lexico)
     
     return df

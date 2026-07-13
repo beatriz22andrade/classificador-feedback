@@ -29,13 +29,12 @@ async def analisar_lote_feedbacks(dados: LoteFeedbackInput):
         raise HTTPException(status_code=400, detail="A lista de feedbacks não pode estar vazia.")
     
     try:
-        # Etapa 1: Processamento em lote usando Pandas + spaCy (NLP Clássico)
+        # Etapa 1: (NLP Clássico)
         df_processado = processar_lote_feedbacks(dados.feedbacks)
         
         resultados_finais = []
         
-        # Etapa 2: Iterar sobre o DataFrame para enriquecer os dados com o LangChain
-        # O Pandas nos permite converter as linhas em dicionários facilmente com .to_dict()
+        # Etapa 2: Enriquecer os dados com o LangChain
         for _, linha in df_processado.iterrows():
             item_resultado = {
                 "texto_original": linha["texto_original"],
@@ -44,7 +43,7 @@ async def analisar_lote_feedbacks(dados: LoteFeedbackInput):
             }
             
             # Se a triagem inicial do NLP indicar que o feedback não é estritamente POSITIVO,
-            # nós usamos o poder analítico do LLM para entender o problema profundamente.
+            # usa-se a LLM para entender o problema.
             if linha["analise_inicial"] in ["NEGATIVO", "NEUTRO"]:
                 analise_ia = analisar_feedback_critico_com_ia(linha["texto_original"])
                 # Junta os dados do dicionário gerado pela IA ao nosso resultado
