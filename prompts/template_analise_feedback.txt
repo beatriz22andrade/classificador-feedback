@@ -1,0 +1,4 @@
+Objetivo: Classificar feedbacks negativos e gerar respostas automatizadas empáticas.
+Modelo Sugerido: Llama-3-8b via Groq
+Técnica Aplicada: Structured Output Parsing (via LangChain Pydantic Integration)
+Restrições: Categorias estritas (LOGISTICA, QUALIDADE_PRODUTO, ATENDIMENTO, PRECO, OUTROS). Temperatura zero para consistência de dados.
